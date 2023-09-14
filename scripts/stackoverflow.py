@@ -1,13 +1,5 @@
 import requests
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate
-from reportlab.platypus import Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
-from bs4 import BeautifulSoup
-from pathlib import Path
 import pdfkit
-# from weasyprint import HTML
-
 # Replace 'YOUR_API_KEY' with your Stack Overflow API key
 API_KEY = 'EFTu48nd)ulszUXg4YMOEA(('
 
@@ -17,9 +9,10 @@ BASE_URL = f'https://stackoverflow.microsoft.com/api/2.2/questions'
 # Specify the tags you are interested in
 tags = ['objectstore']
 
-# Construct the URL for fetching questionsl
+# Construct the URL for fetching questions
 questionsAnswers = []
 config = pdfkit.configuration(wkhtmltopdf="C:/Program Files (x86)/wkhtmltopdf/bin/wkhtmltopdf.exe")
+
 def fetchQuestionsAnswers():
     page=0
     hasMoreResults=True
@@ -43,7 +36,8 @@ def fetchQuestionsAnswers():
             # Check if there are more results to be fetched 
             if(data['has_more']!=True):
                 hasMoreResults=False
-            # get all the ids of question & separate thm by ; 
+            # Batch the requests upto max ids which is 100 to fetch answers for 100 questions in a single call
+            # Get all the ids of question & separate thm by ; 
             count=0
             for question in data['items']:
                 count+=1
@@ -52,9 +46,8 @@ def fetchQuestionsAnswers():
                 else:
                     id_string=id_string +";" + str(question['question_id'])
                 question_title_id[question['question_id']]=(question['title'], question['body'])
-            # Make a single call to fetch the answers    
-
-            # Fetch accepted answer for the question
+            # Make a single call to fetch the answers   
+            # Fetch all answers for the question
             params = {
                 'order': 'desc',
                 'sort': 'votes',
@@ -63,20 +56,17 @@ def fetchQuestionsAnswers():
                 'key': API_KEY,
                 'pagesize': '100'
             }
-
             response = requests.get(BASE_URL + f'/{id_string}/answers', params=params)
             if response.status_code == 200:
                 try:
-                    ans=response.json()
-                    for answer in ans['items']:
+                    answers=response.json()
+                    for answer in answers['items']:
                         item = {"title": "", "body": "", "id": "", "answer": ""}
-                        # if answer is accepted
-                        if(answer["is_accepted"]==True):
-                            item['answer'] = answer['body']
-                            item['title'] = question_title_id[answer['question_id']][0]
-                            item['body'] = question_title_id[answer['question_id']][1]
-                            item['id'] = answer['question_id']
-                            questionsAnswers.append(item)
+                        item['answer'] = answer['body']
+                        item['title'] = question_title_id[answer['question_id']][0]
+                        item['body'] = question_title_id[answer['question_id']][1]
+                        item['id'] = answer['question_id']
+                        questionsAnswers.append(item)
                 except:
                         print("No answer found")
                 else:
@@ -86,7 +76,6 @@ def fetchQuestionsAnswers():
 
 def buildPDF(fileName):
     html='<html><body style="font-family: Arial;">'
-
     for entry in questionsAnswers:
         html+=f'<h2>{entry["title"]}</h2>'
         html+=f'<p>{entry["body"]}</p>'
