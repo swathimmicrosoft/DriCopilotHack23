@@ -7,11 +7,11 @@ API_KEY = 'EFTu48nd)ulszUXg4YMOEA(('
 BASE_URL = f'https://stackoverflow.microsoft.com/api/2.2/questions'
 
 # Specify the tags you are interested in
-tags = ['objectstore']
+tags = ['falcon']
 
 # Construct the URL for fetching questions
 questionsAnswers = []
-config = pdfkit.configuration(wkhtmltopdf="C:/Program Files (x86)/wkhtmltopdf/bin/wkhtmltopdf.exe")
+config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
 
 def fetchQuestionsAnswers():
     page=0
@@ -84,7 +84,18 @@ def buildPDF(fileName):
     html+='</body></html>'
     pdfkit.from_string(html, fileName, configuration=config,options={"enable-local-file-access": ""})
 
-fetchQuestionsAnswers()
-fileName = "questions_and_answers.pdf"
-buildPDF(fileName)
 
+
+
+
+# Defining main function
+def main():
+    fetchQuestionsAnswers()
+    fileName = "questions_and_answers.pdf"
+    buildPDF(fileName)
+
+
+# Using the special variable
+# __name__
+if __name__=="__main__":
+    main()
