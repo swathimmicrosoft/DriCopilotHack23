@@ -217,7 +217,7 @@ const Chat = () => {
                     <div className={styles.chatInput}>
                         <QuestionInput
                             clearOnSend
-                            placeholder="Type a new question (e.g. does my plan cover annual eye exams?)"
+                            placeholder="Type a new question (e.g. should I choose falcon over AKS?)"
                             disabled={isLoading}
                             onSend={question => makeApiRequest(question)}
                         />

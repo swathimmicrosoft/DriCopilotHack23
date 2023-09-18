@@ -14,9 +14,9 @@ class ChatUser(HttpUser):
         self.client.post(
             "/chat",
             json={
-                "history": [{"user": random.choice(["What is included in my Northwind Health Plus plan that is not in standard?", "What does a Product Manager do?", "What happens in a performance review?", "Whats your whistleblower policy?"])}],
+                "history": [{"user": random.choice(["What is the deadline for Bring your own KV in Falcon", "What is clusterfleet and falconfleet", "Why choose clusterfleet over AKS", "How to onboard to clusterfleet?"])}],
                 "approach": "rrr",
-                "overrides": {"retrieval_mode": "hybrid", "semantic_ranker": True, "semantic_captions": False, "top": 3, "suggest_followup_questions": False},
+                "overrides": {"retrieval_mode": "hybrid", "semantic_ranker": True, "semantic_captions": False, "top": 3, "suggest_followup_questions": True},
             },
         )
         time.sleep(5)
@@ -25,8 +25,8 @@ class ChatUser(HttpUser):
             json={
                 "history": [
                     {
-                        "user": "What happens in a performance review?",
-                        "bot": "During the performance review at Contoso Electronics, the supervisor will discuss the employee's performance over the past year and provide feedback on areas for improvement. They will also provide an opportunity for the employee to discuss their goals and objectives for the upcoming year. The review is a two-way dialogue between managers and employees, and employees will receive a written summary of their performance review which will include a rating of their performance, feedback, and goals and objectives for the upcoming year [employee_handbook-3.pdf].",
+                        "user": "What is the deadline for bring your own kv in falcon",
+                        "bot": "Deadline enforce by falcon to deprecated shared key vault is 30th september 2023.",
                     },
                     {"user": "Does my plan cover eye exams?"},
                 ],

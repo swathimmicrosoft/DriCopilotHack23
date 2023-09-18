@@ -10,7 +10,7 @@ def main():
     input_path = "C:\\Users\\swathim\\Downloads\\documentation\\documentation\\content"
 
     # The location where we will write the PDF files
-    output_path = "C:\\Users\\swathim\\Desktop\\copilotFuncApp\\DriCopilotHack23\\data"
+    output_path = "C:\\Users\\swathim\\Desktop\\hackathon23Github\\DriCopilotHack23\\DriCopilotHack23\\data"
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_path, exist_ok=True)
